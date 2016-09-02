@@ -1,15 +1,14 @@
 import sys
 import signal
 import re
-import pysvg.parser
 import usb.core
 import usb.util
 import threading
 
 from gi.repository import Gtk, Gdk
 
-preamb = 'FN0\x03FX%p,0\x03FY%t\x03FU9999,9999\x03!%s,0\x03FC18\x03FM1\x03TB50,0\x03FO9999,9999' +\
-	'\x03&100,100,100\x03\30,30\x03Z9999,9999\x03L0\x03'
+preamb = 'FN0\x03FX%p,0\x03FY%t\x03FU99999,99999\x03!%s,0\x03FC18\x03FM1\x03TB50,0\x03FO99999,99999' +\
+	'\x03&100,100,100\x03\30,30\x03Z99999,99999\x03L0\x03'
 
 epilog = '&1,1,1\x03TB50,0\x03FO0\x03H'
 
@@ -25,7 +24,7 @@ class UsbDevice:
 		self.reattach = False
 		if self.dev.is_kernel_driver_active(0):
 			self.reattach = True
-	
+
 			try:
 				self.dev.detach_kernel_driver(0)
 			except usb.core.USBError as e:
@@ -117,7 +116,7 @@ class Gui:
 	def cuttingCallback(self, progress):
 		Gdk.threads_add_idle(200, self.pushMessage, "Cutting..."+str(int(progress))+"%")
 		return self.cancelflag
-		
+
 	def cuttingFinishedCallback(self):
 		self.statecutting = False
 		self.cancelflag = False
@@ -189,7 +188,7 @@ class Pyhoulette:
 		data = open(path, "r")
 		self.parseHpgl(data)
 		self.gui.pushMessage("File loaded")
-		
+
 	def run(self):
 		Gdk.threads_init()
 		self.gui.window.show_all()
